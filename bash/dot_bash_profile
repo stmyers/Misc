@@ -1,0 +1,30 @@
+# .bash_profile
+
+# Get the aliases and functions
+if [ -f ~/.bashrc ]; then
+        . ~/.bashrc
+fi
+
+# User specific environment and startup programs
+
+PATH=$PATH:$HOME/bin
+
+export PATH
+
+# Custom prompt with user,role,hostname,IP,timestamp
+# Original format: PS1="[\u@\h \W]\$"
+ROLE="Deployment Server"
+PS1="\[\e[32m\]\u | $ROLE | \H | $(ifconfig $(route -n | grep ^0.0.0.0 | awk '{print $NF}') | grep inet | grep -v inet6 | awk '{print $2}'|cut -f2 -d\:) | \d - \t\[\e[0m\]\n\w \$ "
+
+# Logon Message
+echo -e "\nThis is the Splunk $ROLE"
+source /data/splunk/bin/setSplunkEnv            # Enable Splunk command completion
+echo -e "Splunk Home:\t$SPLUNK_HOME"
+echo -e "Splunk DB:\t$SPLUNK_DB\n"
+
+# Alias to Splunk Home, apps, deployment-apps
+alias s='cd $SPLUNK_HOME'
+alias a='cd $SPLUNK_HOME/etc/apps'
+alias d='cd $SPLUNK_HOME/etc/deployment-apps'
+
+
